@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">ReminderTest</string>
+
+    <!-- Login & Register -->
+    <string name="login_title">Login</string>
+    <string name="register_title">Daftar</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Konfirmasi Password</string>
+    <string name="full_name">Nama Lengkap</string>
+    <string name="btn_login">LOGIN</string>
+    <string name="btn_register">DAFTAR</string>
+    <string name="no_account">Belum punya akun?</string>
+    <string name="have_account">Sudah punya akun?</string>
+
+    <!-- Main Screen -->
+    <string name="welcome">Selamat datang</string>
+    <string name="add_schedule">Tambah Jadwal</string>
+    <string name="no_schedule">Belum ada jadwal</string>
+    <string name="filter_day">Filter Hari</string>
+    <string name="filter_type">Filter Jenis</string>
+
+    <!-- Schedule Form -->
+    <string name="schedule_name">Nama Mata Kuliah</string>
+    <string name="schedule_type">Jenis</string>
+    <string name="schedule_day">Hari</string>
+    <string name="schedule_start_time">Waktu Mulai</string>
+    <string name="schedule_end_time">Waktu Selesai</string>
+    <string name="schedule_room">Ruangan</string>
+    <string name="schedule_notes">Keterangan</string>
+    <string name="btn_save">SIMPAN</string>
+
+    <!-- Menu -->
+    <string name="menu_refresh">Refresh</string>
+    <string name="menu_logout">Logout</string>
+
+    <!-- Dialog -->
+    <string name="delete_title">Hapus Jadwal</string>
+    <string name="delete_message">Apakah Anda yakin ingin menghapus jadwal ini?</string>
+    <string name="logout_title">Logout</string>
+    <string name="logout_message">Apakah Anda yakin ingin keluar?</string>
+    <string name="btn_yes">Ya</string>
+    <string name="btn_no">Tidak</string>
+    <string name="btn_cancel">Batal</string>
+</resources>

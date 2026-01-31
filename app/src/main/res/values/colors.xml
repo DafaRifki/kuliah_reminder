@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Primary Colors -->
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FFC107</color>
+
+    <!-- Background Colors -->
+    <color name="colorBackground">#F5F5F5</color>
+    <color name="colorWhite">#FFFFFF</color>
+
+    <!-- Text Colors -->
+    <color name="textPrimary">#212121</color>
+    <color name="textSecondary">#757575</color>
+
+    <!-- Status Colors -->
+    <color name="colorKuliah">#3F51B5</color>
+    <color name="colorPraktikum">#4CAF50</color>
+    <color name="colorTugas">#FF9800</color>
+
+    <!-- Utility Colors -->
+    <color name="colorError">#F44336</color>
+    <color name="colorSuccess">#4CAF50</color>
+    <color name="colorDivider">#E0E0E0</color>
+</resources>
