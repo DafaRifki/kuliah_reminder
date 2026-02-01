@@ -9,11 +9,14 @@ import com.example.kuliahreminder.model.Schedule;
 import com.example.kuliahreminder.model.User;
 import java.util.ArrayList;
 import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     // Database Info
     private static final String DATABASE_NAME = "jadwal_kuliah.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // Table Names
     private static final String TABLE_USERS = "users";
@@ -37,6 +40,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_SCHEDULE_WAKTU_SELESAI = "waktu_selesai";
     private static final String KEY_SCHEDULE_RUANGAN = "ruangan";
     private static final String KEY_SCHEDULE_KETERANGAN = "keterangan";
+    private static final String KEY_SCHEDULE_NOTIFICATION_ENABLED = "notification_enabled";
 
     // Table Create Statements
     private static final String CREATE_TABLE_USERS =
@@ -59,6 +63,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     KEY_SCHEDULE_WAKTU_SELESAI + " TEXT NOT NULL, " +
                     KEY_SCHEDULE_RUANGAN + " TEXT, " +
                     KEY_SCHEDULE_KETERANGAN + " TEXT, " +
+                    KEY_SCHEDULE_NOTIFICATION_ENABLED + " INTEGER DEFAULT 1, " +
                     KEY_CREATED_AT + " DATETIME DEFAULT CURRENT_TIMESTAMP, " +
                     "FOREIGN KEY(" + KEY_SCHEDULE_USER_ID + ") REFERENCES " +
                     TABLE_USERS + "(" + KEY_ID + ") ON DELETE CASCADE" +
@@ -66,6 +71,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    // Method helper untuk get current datetime
+    private String getCurrentDateTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
+                new Locale("id", "ID"));
+        return sdf.format(new Date());
     }
 
     @Override
@@ -92,6 +104,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_USER_NAMA, user.getNamaLengkap());
         values.put(KEY_USER_EMAIL, user.getEmail());
         values.put(KEY_USER_PASSWORD, user.getPassword());
+        values.put(KEY_CREATED_AT, getCurrentDateTime());
 
         long id = db.insert(TABLE_USERS, null, values);
         db.close();
@@ -173,6 +186,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_SCHEDULE_WAKTU_SELESAI, schedule.getWaktuSelesai());
         values.put(KEY_SCHEDULE_RUANGAN, schedule.getRuangan());
         values.put(KEY_SCHEDULE_KETERANGAN, schedule.getKeterangan());
+        values.put(KEY_SCHEDULE_NOTIFICATION_ENABLED, schedule.isNotificationEnabled() ? 1 : 0);
 
         long id = db.insert(TABLE_SCHEDULES, null, values);
         db.close();
@@ -202,6 +216,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 schedule.setWaktuSelesai(cursor.getString(cursor.getColumnIndexOrThrow(KEY_SCHEDULE_WAKTU_SELESAI)));
                 schedule.setRuangan(cursor.getString(cursor.getColumnIndexOrThrow(KEY_SCHEDULE_RUANGAN)));
                 schedule.setKeterangan(cursor.getString(cursor.getColumnIndexOrThrow(KEY_SCHEDULE_KETERANGAN)));
+                schedule.setNotificationEnabled(cursor.getInt(cursor.getColumnIndexOrThrow(KEY_SCHEDULE_NOTIFICATION_ENABLED)) == 1);
 
                 schedules.add(schedule);
             } while (cursor.moveToNext());
@@ -292,6 +307,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_SCHEDULE_WAKTU_SELESAI, schedule.getWaktuSelesai());
         values.put(KEY_SCHEDULE_RUANGAN, schedule.getRuangan());
         values.put(KEY_SCHEDULE_KETERANGAN, schedule.getKeterangan());
+        values.put(KEY_SCHEDULE_NOTIFICATION_ENABLED, schedule.isNotificationEnabled() ? 1 : 0 );
+        values.put(KEY_CREATED_AT, getCurrentDateTime());
 
         int result = db.update(TABLE_SCHEDULES, values,
                 KEY_ID + " = ?",

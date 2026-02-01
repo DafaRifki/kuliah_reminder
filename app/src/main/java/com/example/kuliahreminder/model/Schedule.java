@@ -11,8 +11,10 @@ public class Schedule {
     private String ruangan;
     private String keterangan;
     private String createdAt;
+    private boolean notificationEnabled;
 
     public Schedule() {
+        this.notificationEnabled = true;
     }
 
     public Schedule(int userId, String namaMatkul, String jenis, String hari, String waktuMulai, String waktuSelesai, String ruangan, String keterangan) {
@@ -24,6 +26,7 @@ public class Schedule {
         this.waktuSelesai = waktuSelesai;
         this.ruangan = ruangan;
         this.keterangan = keterangan;
+        this.notificationEnabled = true; // Default enabled
     }
 
     public int getId() {
@@ -104,6 +107,14 @@ public class Schedule {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public boolean isNotificationEnabled() {
+        return notificationEnabled;
+    }
+
+    public void setNotificationEnabled(boolean notificationEnabled) {
+        this.notificationEnabled = notificationEnabled;
     }
 
     public String getFormattedTime() {

@@ -12,12 +12,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.kuliahreminder.R;
 import com.example.kuliahreminder.database.DatabaseHelper;
 import com.example.kuliahreminder.model.Schedule;
+import com.example.kuliahreminder.utils.AlarmHelper;
 import com.example.kuliahreminder.utils.Constants;
 import com.example.kuliahreminder.utils.SessionManager;
 
@@ -37,6 +39,7 @@ public class AddEditScheduleActivity extends AppCompatActivity {
     private boolean isEditMode = false;
     private int scheduleId = -1;
     private Schedule currentSchedule;
+    private Switch switchNotification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +85,7 @@ public class AddEditScheduleActivity extends AppCompatActivity {
         spinnerJenis = findViewById(R.id.spinner_jenis);
         spinnerHari = findViewById(R.id.spinner_hari);
         btnSimpan = findViewById(R.id.btn_simpan);
+        switchNotification = findViewById(R.id.switch_notification);
     }
 
     private void setupToolbar() {
@@ -170,6 +174,7 @@ public class AddEditScheduleActivity extends AppCompatActivity {
             etWaktuSelesai.setText(currentSchedule.getWaktuSelesai());
             etRuangan.setText(currentSchedule.getRuangan());
             etKeterangan.setText(currentSchedule.getKeterangan());
+            switchNotification.setChecked(currentSchedule.isNotificationEnabled());
 
             // Set spinner selections
             for (int i = 0; i < Constants.JENIS_ARRAY.length; i++) {
@@ -206,6 +211,7 @@ public class AddEditScheduleActivity extends AppCompatActivity {
         String waktuSelesai = etWaktuSelesai.getText().toString().trim();
         String ruangan = etRuangan.getText().toString().trim();
         String keterangan = etKeterangan.getText().toString().trim();
+        boolean notificationEnabled = switchNotification.isChecked();
 
         // Validation
         if (!validateInput(namaMatkul, waktuMulai, waktuSelesai)) {
@@ -221,9 +227,17 @@ public class AddEditScheduleActivity extends AppCompatActivity {
             currentSchedule.setWaktuSelesai(waktuSelesai);
             currentSchedule.setRuangan(ruangan);
             currentSchedule.setKeterangan(keterangan);
+            currentSchedule.setNotificationEnabled(notificationEnabled);
 
             int result = db.updateSchedule(currentSchedule);
             if (result > 0) {
+                // Set/Cancel alarm based on notification setting
+                if (notificationEnabled) {
+                    AlarmHelper.setAlarm(this, currentSchedule);
+                } else {
+                    AlarmHelper.cancelAlarm(this, currentSchedule.getId());
+                }
+
                 Toast.makeText(this, Constants.MSG_SCHEDULE_UPDATED, Toast.LENGTH_SHORT).show();
                 setResult(RESULT_OK);
                 finish();
@@ -239,9 +253,16 @@ public class AddEditScheduleActivity extends AppCompatActivity {
                     ruangan,
                     keterangan
             );
+            newSchedule.setNotificationEnabled(notificationEnabled);
 
             long result = db.addSchedule(newSchedule);
             if (result != -1) {
+                // Set alarm if notification enabled
+                newSchedule.setId((int) result);
+                if (notificationEnabled) {
+                    AlarmHelper.setAlarm(this, newSchedule);
+                }
+
                 Toast.makeText(this, Constants.MSG_SCHEDULE_ADDED, Toast.LENGTH_SHORT).show();
                 setResult(RESULT_OK);
                 finish();
