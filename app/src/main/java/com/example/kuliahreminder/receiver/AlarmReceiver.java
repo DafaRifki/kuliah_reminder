@@ -23,7 +23,7 @@ public class AlarmReceiver extends BroadcastReceiver{
     public void onReceive(Context context, Intent intent) {
         // Get data from intent
         String namaMatkul = intent.getStringExtra("nama_matkul");
-        String waktu = intent.getStringExtra("waktu_selesai");
+        String waktu = intent.getStringExtra("waktu");
         String ruangan = intent.getStringExtra("ruangan");
         String jenis = intent.getStringExtra("jenis");
         int scheduleId = intent.getIntExtra("id", -1);
